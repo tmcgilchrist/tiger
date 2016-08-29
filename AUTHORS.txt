@@ -1,0 +1,8 @@
+(* OASIS_START *)
+(* DO NOT EDIT (digest: 0a550038ff1f2194e974edbc46bf29ca) *)
+
+Authors of tiger:
+
+* Tim McGilchrist
+
+(* OASIS_STOP *)

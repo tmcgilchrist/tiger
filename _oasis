@@ -1,0 +1,15 @@
+OASISFormat: 0.4
+Name:        tiger
+Version:     0.0.1
+Synopsis:    Compiler for Tiger language from "Modern Compiler Implementation
+  in ML"
+Authors:     Tim McGilchrist <timmcgil@gmail.com>
+License:     BSD-3-clause
+Plugins:     META (0.4), StdFiles (0.4), DevFiles (0.4)
+
+Library tiger
+  Path:            lib
+  BuildTools:      ocamlbuild
+  Modules:         Lexer
+  InternalModules: Lexer
+  
