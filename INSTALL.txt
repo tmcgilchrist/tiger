@@ -1,5 +1,5 @@
 (* OASIS_START *)
-(* DO NOT EDIT (digest: 7f847b41d16fa0f977f9a9ee9dcb4634) *)
+(* DO NOT EDIT (digest: 8e5fac12947eb58ca3b2dde878caeeaf) *)
 
 This is the INSTALL file for the tiger distribution.
 
@@ -12,6 +12,7 @@ Dependencies
 In order to compile this package, you will need:
                                                 * ocaml
                                                 * findlib
+                                                * core
 
 Installing
 ==========

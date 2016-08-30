@@ -9,7 +9,14 @@ Plugins:     META (0.4), StdFiles (0.4), DevFiles (0.4)
 
 Library tiger
   Path:            lib
+  BuildDepends:    core             
   BuildTools:      ocamlbuild
-  Modules:         Lexer
-  InternalModules: Lexer
-  
+  Modules:         Lexer, Parser
+
+Executable tiger
+  Path:             main
+  MainIs:           main.ml
+  CompiledObject:   best
+  Install:          false
+  BuildDepends:     core, tiger
+  BuildTools:       ocamlbuild
