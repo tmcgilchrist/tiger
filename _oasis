@@ -6,6 +6,7 @@ Synopsis:    Compiler for Tiger language from "Modern Compiler Implementation
 Authors:     Tim McGilchrist <timmcgil@gmail.com>
 License:     BSD-3-clause
 Plugins:     META (0.4), StdFiles (0.4), DevFiles (0.4)
+AlphaFeatures:   stdfiles_markdown
 
 Library tiger
   Path:            lib

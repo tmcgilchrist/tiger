@@ -1,5 +1,5 @@
-(* OASIS_START *)
-(* DO NOT EDIT (digest: 8e5fac12947eb58ca3b2dde878caeeaf) *)
+<!--- OASIS_START --->
+<!--- DO NOT EDIT (digest: 8e5fac12947eb58ca3b2dde878caeeaf) --->
 
 This is the INSTALL file for the tiger distribution.
 
@@ -35,4 +35,4 @@ OASIS is a program that generates a setup.ml file using a simple '_oasis'
 configuration file. The generated setup only depends on the standard OCaml
 installation: no additional library is required.
 
-(* OASIS_STOP *)
+<!--- OASIS_STOP --->
