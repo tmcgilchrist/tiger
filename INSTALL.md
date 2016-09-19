@@ -1,5 +1,5 @@
 <!--- OASIS_START --->
-<!--- DO NOT EDIT (digest: 8e5fac12947eb58ca3b2dde878caeeaf) --->
+<!--- DO NOT EDIT (digest: 34bab02e894573e620bb3d488deabe9d) --->
 
 This is the INSTALL file for the tiger distribution.
 
@@ -10,9 +10,11 @@ Dependencies
 ============
 
 In order to compile this package, you will need:
-                                                * ocaml
-                                                * findlib
-                                                * core
+
+* ocaml (>= 4.02.3)
+* findlib
+* core
+* sexplib for library tiger
 
 Installing
 ==========

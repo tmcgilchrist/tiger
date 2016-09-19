@@ -4,14 +4,47 @@
   exception Error of string
 }
 
+let newline = '\r' | '\n' | "\r\n"
+let digits = ['0' - '9']
+let alpha = ['a' - 'z' 'A' - 'Z']
+
 rule token = parse
 | [' ' '\t' '\n'] (* also ignore newlines, not only whitespace and tabs *)
     { token lexbuf }
-(* add the semicolon as a new token *)
-| ';'
-    { SEMICOLON }
-| ['0'-'9']+ as i
-    { INT (int_of_string i) }
+| "while"
+    { WHILE }
+| "for"
+    { FOR }
+| "to"
+    { TO }
+| "break"
+    { BREAK }
+| "let"
+    { LET }
+| "in"
+    { IN }
+| "end"
+    { END }
+| "function"
+    { FUNCTION }
+| "var"
+    { VAR }
+| "type"
+    { TYPE }
+| "array"
+    { ARRAY }
+| "if"
+    { IF }
+| "then"
+    { THEN }
+| "else"
+    { ELSE }
+| "do"
+    { DO }
+| "of"
+    { OF }
+| "nil"
+    { NIL }
 | '+'
     { PLUS }
 | '-'
@@ -24,7 +57,41 @@ rule token = parse
     { LPAREN }
 | ')'
     { RPAREN }
+| '{'
+    { LBRACE }
+| '}'
+    { RBRACE }
+| '['
+    { LBRACK }
+| ']'
+    { RBRACK }
+| ','
+    { COMMA }
+| ';'
+    { SEMICOLON }
+| ':'
+    { COLON }
+| '.'
+    { DOT }
+| '&'
+    { AMPER }
+| '|'
+    { PIPE }
+| ":="
+    { COLONEQ }
+| '='
+    { EQ }
+| "<>"
+    { NEQ }
+| '<'
+    { LT }
+| "<="
+    { LTEQ }
+| '>'
+    { GT }
+| ">="
+    { GTEQ }
 | eof
     { EOF }
-| _
-    { raise (Error (Printf.sprintf "At offset %d: unexpected character.\n" (Lexing.lexeme_start lexbuf))) }
+| (digits | '_')+ as n { INT (int_of_string n) }
+| alpha (alpha | digits | '_')* as v { ID v }
