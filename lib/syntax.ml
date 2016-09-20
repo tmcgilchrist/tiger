@@ -1,6 +1,8 @@
 (* This module defines the initial AST structure *)
 open Core.Std
 
+type var = string
+
 type op =
   | PLUS
   | MINUS
@@ -10,6 +12,7 @@ type op =
 type expr =
   | Int of int
   | Op of op * expr * expr
+  | Var of var * expr
 
 module Print = struct
 
@@ -22,4 +25,5 @@ module Print = struct
   let rec pp_expr = function
     | Int i -> string_of_int i
     | Op (o, a, b) -> pp_expr a ^ " " ^ pp_oper o ^ " " ^ pp_expr b
+    | Var (v, e) -> "var " ^ v ^ " := " ^ pp_expr e
 end

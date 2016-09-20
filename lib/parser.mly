@@ -25,8 +25,10 @@ expr:
 | i = INT
     { Syntax.Int i }
 | e1 = expr PLUS e2 = expr
-    { (Syntax.Op (Syntax.PLUS, e1, e2)) }
+    { Syntax.Op (Syntax.PLUS, e1, e2) }
 | e1 = expr MINUS e2 = expr
-    { (Syntax.Op (Syntax.MINUS, e1, e2)) }
+    { Syntax.Op (Syntax.MINUS, e1, e2) }
 | e1 = expr TIMES e2 = expr
-    { (Syntax.Op (Syntax.TIMES, e1, e2)) }
+    { Syntax.Op (Syntax.TIMES, e1, e2) }
+| VAR v = ID COLONEQ e = expr
+    { Syntax.Var (v, e)}
