@@ -30,5 +30,7 @@ expr:
     { Syntax.Op (Syntax.MINUS, e1, e2) }
 | e1 = expr TIMES e2 = expr
     { Syntax.Op (Syntax.TIMES, e1, e2) }
+| e1 = expr DIV e2 = expr
+    { Syntax.Op (Syntax.DIV, e1, e2) }
 | VAR v = ID COLONEQ e = expr
     { Syntax.Var (v, e)}

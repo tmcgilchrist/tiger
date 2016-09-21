@@ -20,3 +20,17 @@ Executable main
   Install:          false
   BuildDepends:     core, tiger
   BuildTools:       ocamlbuild
+
+Executable test_parser
+  Path:               test
+  MainIs:             test_parser.ml
+  Build$:             flag(tests)
+  Custom:             true
+  CompiledObject:     best
+  Install:            false
+  BuildDepends:       core, tiger, oUnit (>= 1.0.2)
+
+Test test_parser
+  Run$:               flag(tests)
+  Command:            $test_parser
+  WorkingDirectory:   test
