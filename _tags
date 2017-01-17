@@ -1,5 +1,5 @@
 # OASIS_START
-# DO NOT EDIT (digest: 946cf520ca04606f6e3d2f01672ac39e)
+# DO NOT EDIT (digest: d73d87fafa3022a2b40078179609685f)
 # Ignore VCS directories, you can use the same kind of rule outside
 # OASIS_START/STOP if you want to exclude directories that contains
 # useless stuff for the build process
@@ -16,17 +16,17 @@ true: annot, bin_annot
 "_darcs": not_hygienic
 # Library tiger
 "lib/tiger.cmxs": use_tiger
-<lib/*.ml{,i,y}>: package(core)
+<lib/*.ml{,i,y}>: package(core_kernel)
 # Executable main
-<main/main.{native,byte}>: package(core)
+<main/main.{native,byte}>: package(core_kernel)
 <main/main.{native,byte}>: use_tiger
-<main/*.ml{,i,y}>: package(core)
+<main/*.ml{,i,y}>: package(core_kernel)
 <main/*.ml{,i,y}>: use_tiger
 # Executable test_parser
-<test/test_parser.{native,byte}>: package(core)
+<test/test_parser.{native,byte}>: package(core_kernel)
 <test/test_parser.{native,byte}>: package(oUnit)
 <test/test_parser.{native,byte}>: use_tiger
-<test/*.ml{,i,y}>: package(core)
+<test/*.ml{,i,y}>: package(core_kernel)
 <test/*.ml{,i,y}>: package(oUnit)
 <test/*.ml{,i,y}>: use_tiger
 <test/test_parser.{native,byte}>: custom

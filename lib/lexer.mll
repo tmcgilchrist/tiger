@@ -7,6 +7,7 @@
 let newline = '\r' | '\n' | "\r\n"
 let digits = ['0' - '9']
 let alpha = ['a' - 'z' 'A' - 'Z']
+let id = ['A'-'Z' 'a'-'z' '_']['A'-'Z' 'a'-'z' '0'-'9' '_']*
 
 rule token = parse
 | [' ' '\t' '\n'] (* also ignore newlines, not only whitespace and tabs *)
@@ -94,4 +95,4 @@ rule token = parse
 | eof
     { EOF }
 | (digits | '_')+ as n { INT (int_of_string n) }
-| alpha (alpha | digits | '_')* as v { ID v }
+| alpha (alpha | digits | '_')* as v { IDENT v }

@@ -10,7 +10,7 @@ BuildTools:   ocamlbuild
 
 Library tiger
   Path:            lib
-  BuildDepends:    core
+  BuildDepends:    core_kernel, menhir
   Modules:         Lexer, Parser, Syntax
 
 Executable main
@@ -18,7 +18,7 @@ Executable main
   MainIs:           main.ml
   CompiledObject:   best
   Install:          false
-  BuildDepends:     core, tiger
+  BuildDepends:     core_kernel, tiger
   BuildTools:       ocamlbuild
 
 Executable test_parser
@@ -28,7 +28,7 @@ Executable test_parser
   Custom:             true
   CompiledObject:     best
   Install:            false
-  BuildDepends:       core, tiger, oUnit (>= 1.0.2)
+  BuildDepends:       core_kernel, tiger, oUnit (>= 1.0.2)
 
 Test test_parser
   Run$:               flag(tests)

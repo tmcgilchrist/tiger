@@ -1,5 +1,7 @@
 %{
   open Lexing
+  module S = Syntax
+  module L = Location
 %}
 
 %token WHILE FOR TO BREAK LET IN END FUNCTION VAR
@@ -12,25 +14,34 @@
 
 %token <int> INT
 %token <string> STRING
-%token <string> ID
+%token <string> IDENT
 
-%start <Syntax.expr> prog
+%start <Syntax.expr Location.loc> prog
 
 %%
 
+(* Tag with location *)
+%inline loc(X) :
+| x = X { L.mkloc x (L.mk $startpos $endpos) }
+
 prog:
-  | e = expr EOF { e }
+  | e = loc(expr) EOF { e }
+  | error  {Error.syntax_error (L.mk $startpos $endpos) ""}
 
 expr:
-| i = INT
-    { Syntax.Int i }
-| e1 = expr PLUS e2 = expr
-    { Syntax.Op (Syntax.PLUS, e1, e2) }
-| e1 = expr MINUS e2 = expr
-    { Syntax.Op (Syntax.MINUS, e1, e2) }
-| e1 = expr TIMES e2 = expr
-    { Syntax.Op (Syntax.TIMES, e1, e2) }
-| e1 = expr DIV e2 = expr
-    { Syntax.Op (Syntax.DIV, e1, e2) }
-| VAR v = ID COLONEQ e = expr
-    { Syntax.Var (v, e)}
+| i = loc(INT) { S.Int i }
+| e1 = loc(expr) o = loc(op) e2 = loc(expr)
+    { S.Op (o, e1, e2) }
+| unit = loc(NIL) { S.Nil unit }
+
+%inline op :
+| PLUS { S.Plus }
+| MINUS { S.Minus }
+| TIMES { S.Times }
+| DIV { S.Div }
+| EQ { S.Eq }
+| NEQ { S.NEq }
+| GT { S.Gt }
+| GTEQ { S.GtEq }
+| LT { S.Lt }
+| LTEQ { S.LtEq }

@@ -1,4 +1,4 @@
-open Core.Std
+open Core_kernel.Std
 
 open Syntax
 
@@ -9,7 +9,7 @@ let main () =
   let input = open_in filename in
   let filebuf = Lexing.from_channel input in
   try
-    Printf.printf "%s\n" (Syntax.Print.pp_expr (Parser.prog Lexer.token filebuf))
+    Printf.printf "%s\n" (Syntax.Print.pp_prog (Parser.prog Lexer.token filebuf))
   with
   | Lexer.Error msg ->
       Printf.eprintf "%s%!" msg

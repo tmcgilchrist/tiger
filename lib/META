@@ -1,9 +1,9 @@
 # OASIS_START
-# DO NOT EDIT (digest: 031ca33f06bc0f36a36428011d236aa7)
+# DO NOT EDIT (digest: 660ff81110a8006920f9cd92afa2baf9)
 version = "0.0.1"
 description =
 "Compiler for Tiger language from \"Modern Compiler Implementation in ML\""
-requires = "core"
+requires = "core_kernel"
 archive(byte) = "tiger.cma"
 archive(byte, plugin) = "tiger.cma"
 archive(native) = "tiger.cmxa"

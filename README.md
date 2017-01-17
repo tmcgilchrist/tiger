@@ -11,8 +11,14 @@ For development you will need to install `core` and `menhir`. For running tests 
 the `oUnit` package and reconfigure the build process to enable tests:
 
 ``` shell
-opam install core menhir oUnit
+# Setup isolated sandbox/switch
+opam switch 4.03.0-tiger --alias 4.03.0
+
+# Install dependencies
+opam install core_kernel menhir oUnit utop
+
 ./configure --enable-tests
+
 make && make test
 ```
 
