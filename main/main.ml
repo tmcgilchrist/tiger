@@ -6,10 +6,10 @@ open Syntax
 let filename = Sys.argv.(1)
 
 let main () =
-  let input = open_in filename in
+  let input = In_channel.create filename in
   let filebuf = Lexing.from_channel input in
   try
-    Printf.printf "%s\n" (Syntax.Print.pp_prog (Parser.prog Lexer.token filebuf))
+    Printf.printf "%s\n" (Syntax.Pretty.print_to_string (Parser.prog Lexer.token filebuf))
   with
   | Lexer.Error msg ->
       Printf.eprintf "%s%!" msg

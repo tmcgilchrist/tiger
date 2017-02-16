@@ -1,9 +1,9 @@
 # OASIS_START
-# DO NOT EDIT (digest: 660ff81110a8006920f9cd92afa2baf9)
+# DO NOT EDIT (digest: ecb39ecbf01fd221a62894983b04308f)
 version = "0.0.1"
 description =
 "Compiler for Tiger language from \"Modern Compiler Implementation in ML\""
-requires = "core_kernel"
+requires = "core_kernel menhirLib smart_print"
 archive(byte) = "tiger.cma"
 archive(byte, plugin) = "tiger.cma"
 archive(native) = "tiger.cmxa"

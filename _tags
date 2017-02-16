@@ -1,5 +1,5 @@
 # OASIS_START
-# DO NOT EDIT (digest: d73d87fafa3022a2b40078179609685f)
+# DO NOT EDIT (digest: 07f2b357f578e7b09f55a84f9196296a)
 # Ignore VCS directories, you can use the same kind of rule outside
 # OASIS_START/STOP if you want to exclude directories that contains
 # useless stuff for the build process
@@ -17,17 +17,27 @@ true: annot, bin_annot
 # Library tiger
 "lib/tiger.cmxs": use_tiger
 <lib/*.ml{,i,y}>: package(core_kernel)
+<lib/*.ml{,i,y}>: package(menhirLib)
+<lib/*.ml{,i,y}>: package(smart_print)
 # Executable main
 <main/main.{native,byte}>: package(core_kernel)
+<main/main.{native,byte}>: package(menhirLib)
+<main/main.{native,byte}>: package(smart_print)
 <main/main.{native,byte}>: use_tiger
 <main/*.ml{,i,y}>: package(core_kernel)
+<main/*.ml{,i,y}>: package(menhirLib)
+<main/*.ml{,i,y}>: package(smart_print)
 <main/*.ml{,i,y}>: use_tiger
 # Executable test_parser
 <test/test_parser.{native,byte}>: package(core_kernel)
+<test/test_parser.{native,byte}>: package(menhirLib)
 <test/test_parser.{native,byte}>: package(oUnit)
+<test/test_parser.{native,byte}>: package(smart_print)
 <test/test_parser.{native,byte}>: use_tiger
 <test/*.ml{,i,y}>: package(core_kernel)
+<test/*.ml{,i,y}>: package(menhirLib)
 <test/*.ml{,i,y}>: package(oUnit)
+<test/*.ml{,i,y}>: package(smart_print)
 <test/*.ml{,i,y}>: use_tiger
 <test/test_parser.{native,byte}>: custom
 # OASIS_STOP

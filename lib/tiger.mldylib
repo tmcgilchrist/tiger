@@ -1,6 +1,9 @@
 # OASIS_START
-# DO NOT EDIT (digest: e929a483aa8e8c993123db47c641724f)
+# DO NOT EDIT (digest: d9b8223402ffdec3c66e7b1516009088)
 Lexer
 Parser
 Syntax
+Location
+Error
+Symbol
 # OASIS_STOP

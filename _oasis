@@ -5,15 +5,14 @@ Version:      0.0.1
 Synopsis:     Compiler for Tiger language from "Modern Compiler Implementation in ML"
 Authors:      Tim McGilchrist <timmcgil@gmail.com>
 License:      BSD-3-clause
-Plugins:      META (0.4), StdFiles (0.4), DevFiles (0.4)
+Plugins:      META (0.4), DevFiles (0.4)
 BuildTools:   ocamlbuild
 
 Library tiger
   Path:            lib
-  BuildDepends:    core_kernel (== 114.28+58)
-                 , menhir      (>= 0.2.0)
-                 , smart-print (>= 0.2.0)
-  
+  BuildDepends:    core_kernel 
+                 , menhirLib (>= 0.2.0)      
+                 , smart_print 
   Modules:         Lexer
                  , Parser
                  , Syntax

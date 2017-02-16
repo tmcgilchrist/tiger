@@ -4,3 +4,5 @@ setup.log
 setup.bin
 *.native
 *.byte
+TAGS
+tmp
