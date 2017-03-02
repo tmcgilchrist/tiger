@@ -47,6 +47,11 @@ let test_list c =
   let b = x |> parse_n_print |> Syntax.Pretty.print_to_string in
   assert_equal x b ~msg:("expected: '" ^ x ^ "' got: '" ^ b ^ "'")
 
+let test_list_fail c =
+  let x = "(0 true)" in
+  let b = x |> parse_n_print |> Syntax.Pretty.print_to_string in
+  assert_equal x b ~msg:("expected: '" ^ x ^ "' got: '" ^ b ^ "'")
+
 let test_cases = [
     "parse_arith_mult" >:: test_arith_mult;
     "parse_arith_add" >:: test_arith_add;
@@ -57,6 +62,7 @@ let test_cases = [
     "parse_neq" >:: test_neq;
     "parse_simple_var" >:: test_simple_var;
     "parse_list" >:: test_list;
+    "parse_list_fail" >:: test_list_fail;
   ]
 
 let _ =
