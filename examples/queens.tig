@@ -10,7 +10,7 @@ let
   var diag2 := intArray [ N+N-1 ]  of 0
 
   function printboard() =
-    (for i := 0 to N-1
+    for i := 0 to N-1
       do (for j := 0 to N-1
           do print (if col[i] = j then " O" else " .");
         print("\n"));

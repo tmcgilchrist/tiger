@@ -1,6 +1,7 @@
 open Core_kernel.Std
 
 type t =
+  | LexingError
   | SyntaxError
 
 (* TODO use with sexp *)
@@ -8,11 +9,13 @@ exception Error of t * Location.t * string
 
 let name_of_error = function
   | SyntaxError -> "Syntax error"
+  | LexingError -> "Lexing error"
 
 let raise_error err loc msg =
   raise @@ Error (err, loc, msg)
 
 let syntax_error = raise_error SyntaxError
+let lexing_error = raise_error LexingError
 
 let msg_of_error e loc msg =
   let open Location in
