@@ -1,6 +1,9 @@
 language: c
 install: wget https://raw.githubusercontent.com/ocaml/ocaml-travisci-skeleton/master/.travis-ocaml.sh
-script: bash -ex .travis-ocaml.sh
+script: 
+  - bash -ex .travis-ocaml.sh
+  - make build
+  - make test
 sudo: required
 env:
   - OCAML_VERSION=4.04 PACKAGE=tiger
