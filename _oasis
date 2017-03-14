@@ -10,9 +10,9 @@ BuildTools:   ocamlbuild
 
 Library tiger
   Path:            lib
-  BuildDepends:    core_kernel 
+  BuildDepends:    core_kernel (= 113.33.03)
                  , menhirLib (>= 0.2.0)      
-                 , smart_print 
+                 , smart_print (>= 0.2.0)
   Modules:         Lexer
                  , Parser
                  , Syntax
@@ -43,4 +43,20 @@ Executable test_parser
 Test test_parser
   Run$:               flag(tests)
   Command:            $test_parser
+  WorkingDirectory:   test
+
+Executable test_qc_parser
+  Path:               test
+  MainIs:             test_qc_parser.ml
+  Build$:             flag(tests)
+  Custom:             true
+  CompiledObject:     best
+  Install:            false
+  BuildDepends:       core_kernel
+                    , tiger
+                    , qcheck
+
+Test test_qc_parser
+  Run$:               flag(tests)
+  Command:            $test_qc_parser
   WorkingDirectory:   test

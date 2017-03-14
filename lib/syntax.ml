@@ -45,14 +45,14 @@ type expr =
           expr L.loc option  (* else *)
   | While of expr L.loc * (* condition *)
              expr L.loc    (* body *)
-  | For of Symbol.t * (* indice symbol *)
+  | For of S.t * (* indice symbol *)
            bool ref * (* escapes *)
            expr L.loc * (* from *)
            expr L.loc * (* to *)
            expr L.loc (* body *)
   | Break of unit L.loc
   | Let of dec list *
-           expr L.loc
+           expr L.loc list L.loc
   | Array of S.t L.loc * (* type *)
              expr L.loc * (* size *)
              expr L.loc (* init *)
@@ -91,12 +91,6 @@ module Pretty = struct
 
   let pp_sym s : SmartPrint.t = string s.L.item
 
-  let rec pp_var v : SmartPrint.t =
-    match v.L.item with
-    | SimpleVar {L.item=sv; _} -> string sv
-    | FieldVar (fv, e) -> pp_var fv
-    | SubscriptVar (_, _) -> string "error : subscript var"
-
   let pp_op o : SmartPrint.t =
     string @@ match o.L.item with
     | Plus -> "+"
@@ -110,25 +104,86 @@ module Pretty = struct
     | Gt -> ">"
     | GtEq -> ">="
 
+  let pp_field (d : field) : SmartPrint.t =
+    pp_sym d.name ^^ string ":" ^^ pp_sym d.typ
+
+  let pp_ty (d : ty) : SmartPrint.t =
+    match d with
+    | NameTy s -> pp_sym s
+    | RecordTy fs -> braces @@ SmartPrint.separate (string ", ") @@ List.map ~f:pp_field fs
+    | ArrayTy s -> string "array of" ^^ pp_sym s
+
+  let pp_typ_dec (d : typedec L.loc) : SmartPrint.t =
+    string "type" ^^ pp_sym d.L.item.type_name ^^
+      string "=" ^^ pp_ty d.L.item.typ
+
   let rec pp e : SmartPrint.t =
     match e.L.item with
     | Int {L.item=n; _} -> string @@ string_of_int @@ n
     | Var v -> pp_var @@ v
     | Op (o, a, b) -> pp a ^^ pp_op o ^^ pp b
     | Nil (_) -> string "nil"
-    | String {L.item=s; _} -> string s
-    | Call (s, e) -> pp_sym s ^^ (List.fold_left ~f:(fun a b -> a ^^ pp b) ~init:empty e)
+    | String {L.item=s; _} -> double_quotes @@ string s
+    | Call (s, e) ->
+       let a = SmartPrint.separate (string ", ") @@ List.map ~f:pp e in
+       pp_sym s ^^ parens a
     | Seq b ->
        let bs = List.map ~f:pp b in
        parens @@ separate (string "; ") bs
-    | Record (_, _) -> string "error : record"
-    | Assign (_, _) -> string "error : assign"
-    | If (_, _, _) -> string "error : if"
-    | While (_, _) -> string "error : while"
-    | For (_, _, _, _, _) -> string "error : for"
-    | Break _ -> string "error : break"
-    | Let (_, _) -> string "error : let"
-    | Array (_, _, _) -> string "error : array"
+    | Record (name, e) ->
+       let b (s,x) = pp_sym s ^^ string "=" ^^ pp x in
+       let a = SmartPrint.separate (string ", ") @@ List.map ~f:b e in
+       pp_sym name ^^ braces a
+    | Assign (s, e) -> pp_var s ^^ string ":=" ^^ pp e
+    | If (c, t, e) ->
+       let e' = match e with
+         | None -> string ""
+         | (Some ex) -> newline ^^ string "else" ^^ pp ex in
+       string "if" ^^ pp c ^^ newline ^^ string "then" ^^ pp t ^^ e'
+    | While (c, e) -> string "while" ^^ pp c ^^ string "do" ^^
+                        newline ^^ pp e
+    | For (s, _, fr, si, ini) ->
+       string "for" ^^ string s ^^ string ":=" ^^
+         pp fr ^^ string "to" ^^ pp si ^^ string "do" ^^ newline ^^
+           pp ini
+    | Break _ -> string "break"
+    | Let (d, b) ->
+       let e = SmartPrint.separate (string ";" ^^ newline) @@ List.map ~f:pp b.L.item in
+       string "let" ^^ SmartPrint.newline ^^
+         pp_decs d ^^ SmartPrint.newline ^^
+         string "in" ^^ SmartPrint.newline ^^
+         e ^^ SmartPrint.newline ^^
+         string "end"
 
-  let print_to_string prog : string = to_string 60 60 @@ pp prog
+    | Array (t, s, i) -> pp_sym t ^^ (brakets @@ pp s) ^^ string "of" ^^ pp i
+
+  and pp_fun_dec (d: fundec L.loc) : SmartPrint.t =
+      let f = d.L.item in
+      let p = SmartPrint.separate (string ",") @@ List.map ~f:pp_field f.params in
+      string "function" ^^ pp_sym f.fun_name ^^ parens p ^^
+        Option.value_map ~f:(fun x -> string ":" ^^ pp_sym x) ~default:(string "") f.result_typ ^^
+          string "=" ^^ newline ^^ pp f.body
+
+  and pp_dec (d: dec) : SmartPrint.t =
+    match d with
+    | FunctionDec a -> SmartPrint.separate newline @@ List.map ~f:pp_fun_dec a
+    | VarDec a -> pp_var_dec a
+    | TypeDec td -> SmartPrint.separate newline @@ List.map ~f:pp_typ_dec td
+
+  and pp_decs (d : dec list) : SmartPrint.t =
+    SmartPrint.separate (newline) @@ List.map ~f:pp_dec d
+
+  and pp_var_dec (d : vardec L.loc) : SmartPrint.t =
+    let a = Option.value_map ~f:(fun x -> string ":" ^-^ pp_sym x)
+                             ~default:(string "")
+                             d.L.item.var_typ in
+    string "var" ^^ pp_sym d.L.item.var_name ^-^ a ^^ string ":=" ^^ pp d.L.item.init
+
+  and pp_var v : SmartPrint.t =
+    match v.L.item with
+    | SimpleVar {L.item=sv; _} -> string sv
+    | FieldVar (fv, e) -> pp_var fv ^-^ string "." ^-^ pp_sym e
+    | SubscriptVar (v, e) -> pp_var v ^^ pp e
+
+  let print_to_string prog : string = to_string 80 4 @@ pp prog
 end

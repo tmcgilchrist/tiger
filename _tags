@@ -1,5 +1,5 @@
 # OASIS_START
-# DO NOT EDIT (digest: 07f2b357f578e7b09f55a84f9196296a)
+# DO NOT EDIT (digest: 091d14c60127a1d790bc1f3ec7e984d2)
 # Ignore VCS directories, you can use the same kind of rule outside
 # OASIS_START/STOP if you want to exclude directories that contains
 # useless stuff for the build process
@@ -34,11 +34,19 @@ true: annot, bin_annot
 <test/test_parser.{native,byte}>: package(oUnit)
 <test/test_parser.{native,byte}>: package(smart_print)
 <test/test_parser.{native,byte}>: use_tiger
+<test/*.ml{,i,y}>: package(oUnit)
+<test/test_parser.{native,byte}>: custom
+# Executable test_qc_parser
+<test/test_qc_parser.{native,byte}>: package(core_kernel)
+<test/test_qc_parser.{native,byte}>: package(menhirLib)
+<test/test_qc_parser.{native,byte}>: package(qcheck)
+<test/test_qc_parser.{native,byte}>: package(smart_print)
+<test/test_qc_parser.{native,byte}>: use_tiger
 <test/*.ml{,i,y}>: package(core_kernel)
 <test/*.ml{,i,y}>: package(menhirLib)
-<test/*.ml{,i,y}>: package(oUnit)
+<test/*.ml{,i,y}>: package(qcheck)
 <test/*.ml{,i,y}>: package(smart_print)
 <test/*.ml{,i,y}>: use_tiger
-<test/test_parser.{native,byte}>: custom
+<test/test_qc_parser.{native,byte}>: custom
 # OASIS_STOP
 true: use_menhir, thread

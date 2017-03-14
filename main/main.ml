@@ -9,7 +9,7 @@ let main () =
   let input = In_channel.create filename in
   let filebuf = Lexing.from_channel input in
   try
-    Printf.printf "%s\n" (Syntax.Pretty.print_to_string (Parser.prog Lexer.token filebuf))
+    Printf.printf "%s\n" (Syntax.Pretty.print_to_string (Parser.prog Lexer.lexer filebuf))
   with
   | Lexer.Error msg ->
       Printf.eprintf "%s%!" msg
