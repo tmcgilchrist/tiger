@@ -41,7 +41,8 @@ symbol :
 
 prog:
   | e = loc(expr) EOF { e }
-  | error  {Error.syntax_error (L.mk $startpos $endpos) "sadface :-("}
+
+  | error {Error.syntax_error (L.mk $startpos $endpos) ""}
 
 expr:
   | var = loc(lvalue) { S.Var var }
@@ -133,9 +134,9 @@ expr:
     S.Let (
       decs,
       body
-      (* L.mkloc (S.Seq body.L.item) body.L.loc *)
     )
   }
+  | unit = loc(EOF) {S.Nil unit}
 
 lvalue :
   | x = symbol { S.SimpleVar x }

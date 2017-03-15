@@ -2,10 +2,6 @@ open OUnit
 open Core_kernel
 
 let parse_n_print a : Syntax.expr Location.loc =
-  (* try Parser.prog Lexer.lexer a with *)
-  (* | SyntaxError msg -> *)
-  (*    fprintf stderr "%s\n"  "fo" *)
-
   a |> Lexing.from_string
     |> Parser.prog Lexer.lexer
 
@@ -38,18 +34,20 @@ let test_simple_var c =
   test_string "simple"
 
 let test_var_dec c =
-  test_string "let
-var row := intArray [N] of 0
+  test_string @@
+"let
+    var row := intArray [N] of 0
 in
-row ()
+    row ()
 end"
 
 let test_var_array_dec c =
-  test_string "let
-type arrtype = array of int
-var arr1:arrtype := arrtype [10] of 0
+  test_string @@
+"let
+    type arrtype = array of int
+    var arr1:arrtype := arrtype [10] of 0
 in
-arr1
+    arr1
 end"
 
 let test_list c =
@@ -68,60 +66,65 @@ let test_type c =
   test_string "intArray [N] of 0"
 
 let test_types c =
-  test_string "let
-type intArray = array of int
+  test_string @@
+"let
+    type intArray = array of int
 in
-try (0)
+    try (0)
 end"
 
 let test_neq c =
   test_string "v := 0"
 
 let test_if c =
-  test_string @@ "if true\n" ^
-                 "then 0"
+  test_string @@
+"if true
+then 0"
 
 let test_if_else c =
-  test_string @@ "if true\n" ^
-                 "then 0\n"  ^
-                 "else 1"
+  test_string @@
+"if true
+then 0
+else 1"
 
 let test_while c =
-  test_string @@ "while true do\n" ^
-                 "false"
+  test_string @@
+"while true do
+    false"
 
 let test_for c =
   test_string @@
 "for j := 0 to 10 do
-print (j)"
+    print (j)"
 
 let test_function c =
-  test_string @@ "let
-function zero (a : int) =
-0
+  test_string @@
+"let
+    function zero (a : int) =
+        0
 in
-zero ()
+    zero ()
 end"
 
 let test_records c =
   test_string @@ "let
-type rectype = {name : string, age : int}
-var rec1:rectype := rectype {name = \"Nobody\", age = 1000}
+    type rectype = {name : string, age : int}
+    var rec1:rectype := rectype {name = \"Nobody\", age = 1000}
 in
-rec1.name := \"Somebody\";
-rec1
+    rec1.name := \"Somebody\";
+    rec1
 end"
 
 let test_recursive_function c =
-  test_string @@ "let
-function nfactor (n : int) : int =
-if n = 0
-then 1
-else n * nfactor (n - 1)
+  test_string @@
+"let
+    function nfactor (n : int) : int =
+        if n = 0
+        then 1
+        else n * nfactor (n - 1)
 in
-nfactor (10)
+    nfactor (10)
 end"
-
 
 let test_cases = [
     "parse_arith_mult" >:: test_arith_mult;
@@ -148,7 +151,6 @@ let test_cases = [
     "parse_function" >:: test_function;
     "parse_function_recursive" >:: test_recursive_function;
     "parse_records" >:: test_records;
-
   ]
 
 let _ =

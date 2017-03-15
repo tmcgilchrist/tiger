@@ -22,7 +22,7 @@ let special_char = ['n' 't' '\\' '"']
 let white = ['\t' ' ']
 
 rule lexer = parse
-  | "//" _* newline? { new_line lexbuf; lexer lexbuf }
+  | "/*" {comment 1 lexbuf}
   | '"' { string (Buffer.create 16) lexbuf }
   | eof { EOF }
   | newline { new_line lexbuf; lexer lexbuf }
@@ -112,8 +112,10 @@ and string_ignore buf = parse
 and comment depth = parse
   | "/*" { comment (depth + 1) lexbuf }
   | "*/" {
-    if depth = 1 then lexer lexbuf
-    else comment (depth - 1) lexbuf
+    if depth = 1 then
+      lexer lexbuf
+    else
+      comment (depth - 1) lexbuf
     }
   | eof {
       lexing_error
