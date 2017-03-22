@@ -14,12 +14,14 @@ Library tiger
                  , menhirLib (>= 0.2.0)      
                  , smart_print (>= 0.2.0)
   Modules:         Lexer
+                 , Symbol  
                  , Parser
                  , Syntax
                  , Location
                  , Error
-                 , Symbol  
-
+                 , Env
+                 , Semant
+                 , Types
 Executable main
   Path:             main
   MainIs:           main.ml

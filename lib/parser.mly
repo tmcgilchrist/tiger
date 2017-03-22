@@ -37,7 +37,7 @@
 | x = X { L.mkloc x (L.mk $startpos $endpos) }
 
 symbol :
-| x = loc(IDENT) { x }
+| x = loc(IDENT) { L.mkloc (Symbol.symbol x.L.item) x.L.loc }
 
 prog:
   | e = loc(expr) EOF { e }

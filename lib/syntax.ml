@@ -89,7 +89,9 @@ and typedec = {
 module Pretty = struct
   open SmartPrint
 
-  let pp_sym s : SmartPrint.t = string s.L.item
+  let pp_sym s : SmartPrint.t = string @@ snd @@ s.L.item
+
+  let pp_sym' s : SmartPrint.t = string @@ snd @@ s
 
   let pp_op o : SmartPrint.t =
     string @@ match o.L.item with
@@ -149,7 +151,7 @@ module Pretty = struct
     | While (c, e) -> string "while" ^^ pp c ^^ string "do" ^^ newline ^^
                         indent @@ pp e
     | For (s, _, fr, si, ini) ->
-       string "for" ^^ string s ^^ colon_equals ^^
+       string "for" ^^ pp_sym' s ^^ colon_equals ^^
          pp fr ^^ string "to" ^^ pp si ^^ string "do" ^^ newline ^^
            indent @@ pp ini
     | Break _ -> string "break"
@@ -188,7 +190,7 @@ module Pretty = struct
 
   and pp_var v : SmartPrint.t =
     match v.L.item with
-    | SimpleVar {L.item=sv; _} -> string sv
+    | SimpleVar {L.item=sv; _} -> pp_sym' sv
     | FieldVar (fv, e) -> pp_var fv ^-^ string "." ^-^ pp_sym e
     | SubscriptVar (v, e) -> pp_var v ^^ pp e
 
