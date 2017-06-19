@@ -1,7 +1,11 @@
-type t = int * string
+open Core_kernel.Std
+open Sexplib.Std
 
-let symbol (name : string) : t=
-  let table = Hashtbl.create 128 in
+type symbol = int * string [@@deriving sexp]
+type t = symbol
+
+let symbol (name : string) : symbol =
+  let table = Hashtbl.create ~random:true 128 in
   let n = ref (-1) in
   try
     Hashtbl.find table name, name
@@ -10,14 +14,14 @@ let symbol (name : string) : t=
     Hashtbl.add table name !n;
     !n, name
 
-let name (n : t) : string = snd n
+let name (n : symbol) : string = snd n
 
-module Ord = struct
-  type symbol = t
+module SymbolOrd = struct
   type t = symbol
 
-  let compare (n1, _sym1) (n2, _sym2) =
-    Pervasives.compare n1 n2
+  let sexp_of_t = sexp_of_symbol
+  let t_of_sexp = symbol_of_sexp
+  let compare = Pervasives.compare
 end
 
-module Table = Map.Make (Ord)
+module Table = Map.Make (SymbolOrd)

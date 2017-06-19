@@ -1,5 +1,5 @@
 # OASIS_START
-# DO NOT EDIT (digest: 091d14c60127a1d790bc1f3ec7e984d2)
+# DO NOT EDIT (digest: cc7482819e95e1ae0dde179b5b49fbe5)
 # Ignore VCS directories, you can use the same kind of rule outside
 # OASIS_START/STOP if you want to exclude directories that contains
 # useless stuff for the build process
@@ -18,20 +18,24 @@ true: annot, bin_annot
 "lib/tiger.cmxs": use_tiger
 <lib/*.ml{,i,y}>: package(core_kernel)
 <lib/*.ml{,i,y}>: package(menhirLib)
+<lib/*.ml{,i,y}>: package(ppx_sexp_conv)
 <lib/*.ml{,i,y}>: package(smart_print)
 # Executable main
 <main/main.{native,byte}>: package(core_kernel)
 <main/main.{native,byte}>: package(menhirLib)
+<main/main.{native,byte}>: package(ppx_sexp_conv)
 <main/main.{native,byte}>: package(smart_print)
 <main/main.{native,byte}>: use_tiger
 <main/*.ml{,i,y}>: package(core_kernel)
 <main/*.ml{,i,y}>: package(menhirLib)
+<main/*.ml{,i,y}>: package(ppx_sexp_conv)
 <main/*.ml{,i,y}>: package(smart_print)
 <main/*.ml{,i,y}>: use_tiger
 # Executable test_parser
 <test/test_parser.{native,byte}>: package(core_kernel)
 <test/test_parser.{native,byte}>: package(menhirLib)
 <test/test_parser.{native,byte}>: package(oUnit)
+<test/test_parser.{native,byte}>: package(ppx_sexp_conv)
 <test/test_parser.{native,byte}>: package(smart_print)
 <test/test_parser.{native,byte}>: use_tiger
 <test/*.ml{,i,y}>: package(oUnit)
@@ -39,11 +43,13 @@ true: annot, bin_annot
 # Executable test_qc_parser
 <test/test_qc_parser.{native,byte}>: package(core_kernel)
 <test/test_qc_parser.{native,byte}>: package(menhirLib)
+<test/test_qc_parser.{native,byte}>: package(ppx_sexp_conv)
 <test/test_qc_parser.{native,byte}>: package(qcheck)
 <test/test_qc_parser.{native,byte}>: package(smart_print)
 <test/test_qc_parser.{native,byte}>: use_tiger
 <test/*.ml{,i,y}>: package(core_kernel)
 <test/*.ml{,i,y}>: package(menhirLib)
+<test/*.ml{,i,y}>: package(ppx_sexp_conv)
 <test/*.ml{,i,y}>: package(qcheck)
 <test/*.ml{,i,y}>: package(smart_print)
 <test/*.ml{,i,y}>: use_tiger

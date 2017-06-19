@@ -12,5 +12,5 @@ let base_venv =
 
 let base_tenv =
   S.Table.empty
-  |> S.Table.add (S.symbol "int") T.Int
-  |> S.Table.add (S.symbol "string") T.String
+  |> S.Table.add ~key:(S.symbol "int") ~data:T.Int
+  |> S.Table.add ~key:(S.symbol "string") ~data:T.String

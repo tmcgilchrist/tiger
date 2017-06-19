@@ -10,9 +10,10 @@ BuildTools:   ocamlbuild
 
 Library tiger
   Path:            lib
-  BuildDepends:    core_kernel (= 113.33.03)
+  BuildDepends:    core_kernel (>= 0.9.0)
                  , menhirLib (>= 0.2.0)      
                  , smart_print (>= 0.2.0)
+                 , ppx_sexp_conv
   Modules:         Lexer
                  , Symbol  
                  , Parser
