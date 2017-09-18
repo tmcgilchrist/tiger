@@ -26,8 +26,7 @@
 %nonassoc EQ NEQ GT GTEQ LT LTEQ
 %left PLUS MINUS
 %left TIMES DIV
-%left UNARYMINUS
-
+%nonassoc UNARYMINUS
 %start <Syntax.expr Location.loc> prog
 
 %%
@@ -52,9 +51,8 @@ expr:
   | i = loc(INT)
     { S.Int i }
   | _minus = MINUS e = loc (expr) {
-    S.Op (
+    S.UnaryOp (
       L.mkloc S.Minus (L.mk $startpos(_minus) $endpos(_minus)),
-      L.mkdummy (S.Int (L.mkdummy 0)),
       e
     )
   } %prec UNARYMINUS

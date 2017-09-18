@@ -21,3 +21,6 @@ let mkloc item loc =
 
 let mkdummy item =
   { item; loc = dummy }
+
+let to_string a : string =
+  Printf.sprintf "start_pos: %i end_pos: %i\n" a.startPos.Lexing.pos_lnum a.endPos.Lexing.pos_lnum

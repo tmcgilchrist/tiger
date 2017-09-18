@@ -27,7 +27,6 @@ type ty =
   | RecordTy of field list
   | ArrayTy of S.t L.loc
 
-
 type expr =
   | Var of var L.loc
   | Nil of unit L.loc
@@ -35,6 +34,7 @@ type expr =
   | String of string L.loc
   | Call of S.t L.loc * (* function name *)
             expr L.loc list
+  | UnaryOp of op L.loc * expr L.loc
   | Op of op L.loc * expr L.loc * expr L.loc
   | Record of S.t L.loc * (* type name *)
               (S.t L.loc * expr L.loc) list (* elements *)
@@ -86,6 +86,9 @@ and typedec = {
   typ : ty;
 }
 
+
+
+
 module Pretty = struct
   open SmartPrint
 
@@ -128,6 +131,7 @@ module Pretty = struct
     match e.L.item with
     | Int {L.item=n; _} -> string @@ string_of_int @@ n
     | Var v -> pp_var @@ v
+    | UnaryOp (o, a) -> pp_op o ^-^ pp a
     | Op (o, a, b) -> pp a ^^ pp_op o ^^ pp b
     | Nil (_) -> string "nil"
     | String {L.item=s; _} -> double_quotes @@ string s

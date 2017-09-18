@@ -44,5 +44,5 @@ let test_mirror =
 let _ =
   let open OUnit in
   run_test_tt_main
-    ("tests" >:::
+    ("tree tests" >:::
        List.map QCheck_runner.to_ounit_test [test_mirror])

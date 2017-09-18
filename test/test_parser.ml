@@ -7,7 +7,7 @@ let parse_n_print a : Syntax.expr Location.loc =
 
 let test_string x =
   let b = x |> parse_n_print |> Syntax.Pretty.print_to_string in
-  assert_equal x b ~msg:("expected '" ^ x ^ "' \n got: \n '" ^ b ^ "'")
+  assert_equal x b ~msg:("expected: '" ^ x ^ "' \ngot: '" ^ b ^ "'")
 
 let test_nil c =
   test_string "nil"
@@ -23,6 +23,10 @@ let test_arith_minus c =
 
 let test_arith_div c =
   test_string "1 / 3"
+
+let test_minus_num c =
+  let ex = "-1752185014444534876 + 922652609614397967" in
+  test_string ex
 
 let test_eq c =
   test_string "1 = 3"
@@ -131,6 +135,7 @@ let test_cases = [
     "parse_arith_add" >:: test_arith_add;
     "parse_arith_minus" >:: test_arith_minus;
     "parse_arith_div" >:: test_arith_div;
+    "parse_test_minus" >:: test_minus_num;
     "parse_nil" >:: test_nil;
     "parse_eq" >:: test_eq;
     "parse_neq" >:: test_neq;

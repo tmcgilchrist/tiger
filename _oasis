@@ -23,6 +23,8 @@ Library tiger
                  , Env
                  , Semant
                  , Types
+                 , Translate
+
 Executable main
   Path:             main
   MainIs:           main.ml
