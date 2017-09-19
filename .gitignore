@@ -6,3 +6,4 @@ setup.bin
 *.byte
 TAGS
 tmp
+*.merlin

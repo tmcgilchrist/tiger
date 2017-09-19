@@ -7,20 +7,17 @@ homepage: "https://github.com/tmcgilchrist/tiger"
 dev-repo: "https://github.com/tmcgilchrist/tiger.git"
 bug-reports: "https://github.com/tmcgilchrist/tiger/issues"
 build: [
-  ["ocaml" "setup.ml" "-configure" "--prefix" prefix]
-  ["ocaml" "setup.ml" "-build"]
+  ["jbuilder" "subst"] {pinned}
+  ["jbuilder" "build" "-p" name "-j" jobs]
 ]
-install: ["ocaml" "setup.ml" "-install"]
+build-test: [
+  ["jbuilder" "runtest" "-p" name]
+]
 remove: [
   ["ocamlfind" "remove" "tiger"]
 ]
-build-test: [
-  ["ocaml" "setup.ml" "-configure" "--enable-tests"]
-  ["ocaml" "setup.ml" "-build"]
-  ["ocaml" "setup.ml" "-test"]
-]
 depends: [
-  "core_kernel" {== "113.33.03" }
+  "core_kernel" {>= "0.9.0" }
   "menhir" {>= "0.2.0"}
   "ounit" {test & >= "1.0.2"}
   "smart-print" {>= "0.2.0"}

@@ -1,0 +1,12 @@
+(jbuild_version 1)
+
+(executables
+ ((libraries (tiger oUnit core_kernel))
+  (modules (test_parser))
+  (names (test_parser))))
+
+(alias
+ ((name runtest)
+  (package tiger)
+  (deps (test_parser.exe))
+  (action (run ${<}))))
