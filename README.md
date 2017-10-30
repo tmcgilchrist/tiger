@@ -17,9 +17,11 @@ opam switch 4.03.0-tiger --alias 4.03.0
 # Install dependencies
 opam install core_kernel menhir oUnit utop
 
-./configure --enable-tests
+# Building
+jbuilder build
 
-make && make test
+# Testing
+jbuilder runtest
 ```
 
 Tests are under `test` directory.
