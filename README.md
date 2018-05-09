@@ -12,10 +12,11 @@ the `oUnit` package and reconfigure the build process to enable tests:
 
 ``` shell
 # Setup isolated sandbox/switch
-opam switch 4.03.0-tiger --alias 4.03.0
+opam switch 4.06.1-tiger --alias 4.06.1
 
 # Install dependencies
-opam install core_kernel menhir oUnit utop
+opam pin add -n tiger .
+opam install --deps-only tiger -t
 
 # Building
 jbuilder build
