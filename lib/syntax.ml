@@ -113,7 +113,6 @@ module Pretty = struct
   let equals : SmartPrint.t = string "="
   let colon_equals : SmartPrint.t = string ":="
 
-
   let pp_field (d : field) : SmartPrint.t =
     pp_sym d.name ^^ string ":" ^^ pp_sym d.typ
 
