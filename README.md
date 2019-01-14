@@ -15,6 +15,7 @@ the `oUnit` package and reconfigure the build process to enable tests:
 opam switch 4.06.1-tiger --alias 4.06.1
 
 # Install dependencies
+opam install "dune=1.3.0"
 opam pin add -n tiger .
 opam install --deps-only tiger -t
 
