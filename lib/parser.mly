@@ -1,5 +1,4 @@
 %{
-  open Lexing
   module S = Syntax
   module L = Location
 %}

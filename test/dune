@@ -1,9 +1,7 @@
-(jbuild_version 1)
-
 (executables
- ((libraries (tiger oUnit core_kernel))
-  (modules (test_parser))
-  (names (test_parser))))
+ (libraries tiger oUnit core_kernel)
+ (modules test_parser)
+ (names test_parser))
 
 ; (executables
 ;  ((libraries (tiger oUnit core_kernel qcheck))
@@ -11,10 +9,12 @@
 ;   (names (test_parser test_qc_parser))))
 
 (alias
- ((name runtest)
-  (package tiger)
-  (deps (test_parser.exe))
-  (action (run ${<}))))
+ (name runtest)
+ (package tiger)
+ (deps
+  (:< test_parser.exe))
+ (action
+  (run %{<})))
 
 ; (alias
 ;  ((name runtest)

@@ -1,7 +1,5 @@
 open Core_kernel.Std
 
-open Syntax
-
 (* the name of the file which contains the expressions *)
 let filename = Sys.argv.(1)
 
