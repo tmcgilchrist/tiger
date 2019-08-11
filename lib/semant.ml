@@ -26,7 +26,7 @@ let check_int (expr : expty) =
 (* TODO translate v into actual type, it could be a NAME
    and should really be a concrete type.
 *)
-let rec actual_ty (ty : Types.t) : Types.t option =
+let actual_ty (ty : Types.t) : Types.t option =
   match ty with
   | T.Int -> Some T.Int
   | T.String -> Some T.String
@@ -46,8 +46,8 @@ let rec trans_exp venv tenv exp =
         let open Result.Monad_infix in
         trans_exp venv tenv left >>= fun tyleft ->
         trans_exp venv tenv right >>= fun tyright ->
-        check_int tyleft >>= fun x ->
-        check_int tyright >>= fun y ->
+        check_int tyleft >>= fun _ ->
+        check_int tyright >>= fun _ ->
         Ok {exp = Translate.(); ty = T.Int}
      | _ -> Error NotImplemented)
   | S.Var v ->
@@ -68,9 +68,9 @@ let rec trans_exp venv tenv exp =
 
 
 
-let trans_dec v t s = Ok (v, t)
+let trans_dec v t _s = Ok (v, t)
 
-let trans_ty t s = Ok Types.Nil
+let trans_ty _t _s = Ok Types.Nil
 
 (* TODO
 

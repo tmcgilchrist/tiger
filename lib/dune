@@ -1,0 +1,10 @@
+(library
+ (name tiger)
+ (public_name tiger)
+ (wrapped false)
+ (preprocess (pps ppx_sexp_conv))
+  (libraries core_kernel smart_print))
+
+(ocamllex lexer)
+
+(menhir (modules parser))
