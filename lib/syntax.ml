@@ -1,5 +1,5 @@
 (* This module defines the initial AST structure *)
-open Core_kernel.Std
+open Core_kernel
 
 module L = Location
 module S = Symbol

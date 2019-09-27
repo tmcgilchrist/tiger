@@ -1,5 +1,4 @@
 module T = Types
-module S = Symbol
 
 type access
 
@@ -8,9 +7,9 @@ type entry =
   | FunEntry of T.t list * T.t
 
 let base_venv =
-  S.Table.empty
+  Symbol.Table.empty
 
 let base_tenv =
-  S.Table.empty
-  |> S.Table.add ~key:(S.symbol "int") ~data:T.Int
-  |> S.Table.add ~key:(S.symbol "string") ~data:T.String
+  Symbol.Table.empty
+  |> Symbol.Table.add_exn ~key:(Symbol.symbol "int") ~data:T.Int
+  |> Symbol.Table.add_exn ~key:(Symbol.symbol "string") ~data:T.String

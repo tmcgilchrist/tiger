@@ -1,4 +1,4 @@
-open Core_kernel.Std
+open Core_kernel
 
 (* the name of the file which contains the expressions *)
 let filename = Sys.argv.(1)
