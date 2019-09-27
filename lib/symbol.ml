@@ -1,4 +1,4 @@
-open Core_kernel.Std
+open Core_kernel
 open Sexplib.Std
 
 type symbol = int * string [@@deriving sexp]
@@ -7,12 +7,13 @@ type t = symbol
 let symbol (name : string) : symbol =
   let table = Hashtbl.create ~random:true 128 in
   let n = ref (-1) in
-  try
-    Hashtbl.find table name, name
-  with Not_found ->
-    incr n;
-    Hashtbl.add table name !n;
-    !n, name
+  match (Hashtbl.find_opt table name) with
+  | None ->
+     incr n;
+     Hashtbl.add table name !n;
+     !n, name
+  | Some n ->
+     (n, name)
 
 let name (n : symbol) : string = snd n
 
