@@ -31,7 +31,7 @@ let test_minus_num _ =
 let test_eq _ =
   test_string "1 = 3"
 
-let test_neq_1 _ =
+let test_neq _ =
   test_string "1 <> 3"
 
 let test_simple_var _ =
@@ -63,7 +63,7 @@ let test_quoted_string _ =
 let test_call _ =
   test_string "double (2, 0)"
 
-let test_assign _ =
+let test_record_assign _ =
   test_string "foo {a = 0, b = 1}"
 
 let test_type _ =
@@ -77,7 +77,7 @@ in
     try (0)
 end"
 
-let test_neq_2 _ =
+let test_assign _ =
   test_string "v := 0"
 
 let test_if _ =
@@ -146,9 +146,9 @@ let test_cases = [
     "parse_string" >:: test_quoted_string;
     "parse_call" >:: test_call;
     "parse_assign" >:: test_assign;
+    "parse_record_assign" >:: test_record_assign;
     "parse_type" >:: test_type;
     "parse_types" >:: test_types;
-    "parse_neq" >:: test_neq_2;
     "parse_if" >:: test_if;
     "parse_if_else" >:: test_if_else;
     "parse_while" >:: test_while;
@@ -158,6 +158,6 @@ let test_cases = [
     "parse_records" >:: test_records;
   ]
 
-let _ =
-  let suite = "Parser" >::: test_cases in
-  run_test_tt_main suite
+(* let _ =
+ *   let suite = "Parser" >::: test_cases in
+ *   run_test_tt_main suite *)

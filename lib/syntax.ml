@@ -1,7 +1,7 @@
 (* This module defines the initial AST structure *)
 open Core_kernel
 
-module L = Location
+(* module L = Location *)
 module S = Symbol
 
 type op =
@@ -15,89 +15,91 @@ type op =
   | LtEq
   | Gt
   | GtEq
+  [@@deriving sexp_of]
 
 type field = {
-  name : S.t L.loc;
+  name : S.t Location.loc;
   escape : bool ref;
-  typ : S.t L.loc;
-}
-
+  typ : S.t Location.loc;
+  }
+  [@@deriving sexp_of]
 type ty =
-  | NameTy of S.t L.loc
+  | NameTy of S.t Location.loc
   | RecordTy of field list
-  | ArrayTy of S.t L.loc
+  | ArrayTy of S.t Location.loc
+  [@@deriving sexp_of]
 
 type expr =
-  | Var of var L.loc
-  | Nil of unit L.loc
-  | Int of int L.loc
-  | String of string L.loc
-  | Call of S.t L.loc * (* function name *)
-            expr L.loc list
-  | UnaryOp of op L.loc * expr L.loc
-  | Op of op L.loc * expr L.loc * expr L.loc
-  | Record of S.t L.loc * (* type name *)
-              (S.t L.loc * expr L.loc) list (* elements *)
-  | Seq of expr L.loc list
-  | Assign of var L.loc * expr L.loc
-  | If of expr L.loc * (* condition *)
-          expr L.loc * (* then *)
-          expr L.loc option  (* else *)
-  | While of expr L.loc * (* condition *)
-             expr L.loc    (* body *)
+  | Var of var Location.loc
+  | Nil of unit Location.loc
+  | Int of int Location.loc
+  | String of string Location.loc
+  | Call of S.t Location.loc * (* function name *)
+            expr Location.loc list
+  | UnaryOp of op Location.loc * expr Location.loc
+  | Op of op Location.loc * expr Location.loc * expr Location.loc
+  | Record of S.t Location.loc * (* type name *)
+              (S.t Location.loc * expr Location.loc) list (* elements *)
+  | Seq of expr Location.loc list
+  | Assign of var Location.loc * expr Location.loc
+  | If of expr Location.loc * (* condition *)
+          expr Location.loc * (* then *)
+          expr Location.loc option  (* else *)
+  | While of expr Location.loc * (* condition *)
+             expr Location.loc    (* body *)
   | For of S.t * (* indice symbol *)
            bool ref * (* escapes *)
-           expr L.loc * (* from *)
-           expr L.loc * (* to *)
-           expr L.loc (* body *)
-  | Break of unit L.loc
+           expr Location.loc * (* from *)
+           expr Location.loc * (* to *)
+           expr Location.loc (* body *)
+  | Break of unit Location.loc
   | Let of dec list *
-           expr L.loc list L.loc
-  | Array of S.t L.loc * (* type *)
-             expr L.loc * (* size *)
-             expr L.loc (* init *)
+           expr Location.loc list Location.loc
+  | Array of S.t Location.loc * (* type *)
+             expr Location.loc * (* size *)
+             expr Location.loc (* init *)
+  [@@deriving sexp_of]
 and var =
-  | SimpleVar of S.t L.loc
-  | FieldVar of var L.loc *
-                S.t L.loc
-  | SubscriptVar of var L.loc *
-                    expr L.loc
+  | SimpleVar of S.t Location.loc
+  | FieldVar of var Location.loc *
+                S.t Location.loc
+  | SubscriptVar of var Location.loc *
+                    expr Location.loc
+  [@@deriving sexp_of]
 and dec =
-  | FunctionDec of fundec L.loc list
-  | VarDec of vardec L.loc
-  | TypeDec of typedec L.loc list
-
+  | FunctionDec of fundec Location.loc list
+  | VarDec of vardec Location.loc
+  | TypeDec of typedec Location.loc list
+  [@@deriving sexp_of]
 and fundec = {
-  fun_name : S.t L.loc;
+  fun_name : S.t Location.loc;
   params : field list;
-  result_typ : S.t L.loc option;
-  body : expr L.loc;
+  result_typ : S.t Location.loc option;
+  body : expr Location.loc;
 }
-
+  [@@deriving sexp_of]
 and vardec = {
-  var_name : S.t L.loc;
+  var_name : S.t Location.loc;
   escape : bool ref;
-  var_typ : S.t L.loc option;
-  init : expr L.loc;
+  var_typ : S.t Location.loc option;
+  init : expr Location.loc;
 }
-
+  [@@deriving sexp_of]
 and typedec = {
-  type_name : S.t L.loc;
+  type_name : S.t Location.loc;
   typ : ty;
 }
-
-
-
+  [@@deriving sexp_of]
 
 module Pretty = struct
   open SmartPrint
 
-  let pp_sym s : SmartPrint.t = string @@ snd @@ s.L.item
+  let pp_sym s : SmartPrint.t = string @@ snd @@ s.Location.item
 
   let pp_sym' s : SmartPrint.t = string @@ snd @@ s
 
   let pp_op o : SmartPrint.t =
-    string @@ match o.L.item with
+    string @@ match o.Location.item with
     | Plus -> "+"
     | Minus -> "-"
     | Times -> "*"
@@ -122,18 +124,18 @@ module Pretty = struct
     | RecordTy fs -> braces @@ separate comma_space @@ List.map ~f:pp_field fs
     | ArrayTy s -> string "array of" ^^ pp_sym s
 
-  let pp_typ_dec (d : typedec L.loc) : SmartPrint.t =
-    string "type" ^^ pp_sym d.L.item.type_name ^^
-      equals ^^ pp_ty d.L.item.typ
+  let pp_typ_dec (d : typedec Location.loc) : SmartPrint.t =
+    string "type" ^^ pp_sym d.Location.item.type_name ^^
+      equals ^^ pp_ty d.Location.item.typ
 
   let rec pp e : SmartPrint.t =
-    match e.L.item with
-    | Int {L.item=n; _} -> string @@ string_of_int @@ n
+    match e.Location.item with
+    | Int {Location.item=n; _} -> string @@ string_of_int @@ n
     | Var v -> pp_var @@ v
     | UnaryOp (o, a) -> pp_op o ^-^ pp a
     | Op (o, a, b) -> pp a ^^ pp_op o ^^ pp b
     | Nil (_) -> string "nil"
-    | String {L.item=s; _} -> double_quotes @@ string s
+    | String {Location.item=s; _} -> double_quotes @@ string s
     | Call (s, e) ->
        let a = separate comma_space @@ List.map ~f:pp e in
        pp_sym s ^^ parens a
@@ -159,7 +161,7 @@ module Pretty = struct
            indent @@ pp ini
     | Break _ -> string "break"
     | Let (d, b) ->
-       let e = separate (string ";" ^^ newline) @@ List.map ~f:pp b.L.item in
+       let e = separate (string ";" ^^ newline) @@ List.map ~f:pp b.Location.item in
        string "let" ^^ newline ^^
          indent (pp_decs d ^^ newline) ^^
          string "in" ^^ newline ^^
@@ -168,8 +170,8 @@ module Pretty = struct
 
     | Array (t, s, i) -> pp_sym t ^^ (brakets @@ pp s) ^^ string "of" ^^ pp i
 
-  and pp_fun_dec (d: fundec L.loc) : SmartPrint.t =
-      let f = d.L.item in
+  and pp_fun_dec (d: fundec Location.loc) : SmartPrint.t =
+      let f = d.Location.item in
       let p = separate comma_space @@ List.map ~f:pp_field f.params in
       string "function" ^^ pp_sym f.fun_name ^^ parens p ^^
         Option.value_map ~f:(fun x -> string ":" ^^ pp_sym x) ~default:(string "") f.result_typ ^^
@@ -185,17 +187,51 @@ module Pretty = struct
   and pp_decs (d : dec list) : SmartPrint.t =
     separate (newline) @@ List.map ~f:pp_dec d
 
-  and pp_var_dec (d : vardec L.loc) : SmartPrint.t =
+  and pp_var_dec (d : vardec Location.loc) : SmartPrint.t =
     let a = Option.value_map ~f:(fun x -> string ":" ^-^ pp_sym x)
                              ~default:(string "")
-                             d.L.item.var_typ in
-    string "var" ^^ pp_sym d.L.item.var_name ^-^ a ^^ colon_equals ^^ pp d.L.item.init
+                             d.Location.item.var_typ in
+    string "var" ^^ pp_sym d.Location.item.var_name ^-^ a ^^ colon_equals ^^ pp d.Location.item.init
 
   and pp_var v : SmartPrint.t =
-    match v.L.item with
-    | SimpleVar {L.item=sv; _} -> pp_sym' sv
+    match v.Location.item with
+    | SimpleVar {Location.item=sv; _} -> pp_sym' sv
     | FieldVar (fv, e) -> pp_var fv ^-^ string "." ^-^ pp_sym e
     | SubscriptVar (v, e) -> pp_var v ^^ pp e
 
   let print_to_string prog : string = to_string 80 4 @@ pp prog
 end
+
+let strip_loc (a : expr Location.loc) : expr = a
+(* let rec strip_loc = function
+ *   | Var {item = v; _} -> Var (Location.mkdummy @@ strip_loc_var v)
+ *   | Nil {item = u; _} -> Nil (Location.mkdummy u)
+ *   | Int {item = i; _} -> Int (Location.mkdummy i)
+ *   | String {item = str; _} -> String (Location.mkdummy str)
+ *   (\* | Call [((t, _loc), (expr, _loc))] ->  *\)
+ *   | UnaryOp ({item = op; _}, {item = expr; _}) ->  UnaryOp (Location.mkdummy op, Location.mkdummy @@ strip_loc expr)
+ *   | Op ({item = op; _}, {item = lhs; _}, {item = rhs; _}) -> Op (Location.mkdummy op, Location.mkdummy @@ strip_loc lhs, Location.mkdummy @@ strip_loc rhs)
+ *   | Record of S.t Location.loc * (\* type name *\)
+ *               (S.t Location.loc * expr Location.loc) list (\* elements *\)
+ *   | Seq of expr Location.loc list
+ *   | Assign of var Location.loc * expr Location.loc
+ *   | If of expr Location.loc * (\* condition *\)
+ *           expr Location.loc * (\* then *\)
+ *           expr Location.loc option  (\* else *\)
+ *   | While of expr Location.loc * (\* condition *\)
+ *              expr Location.loc    (\* body *\)
+ *   | For of S.t * (\* indice symbol *\)
+ *            bool ref * (\* escapes *\)
+ *            expr Location.loc * (\* from *\)
+ *            expr Location.loc * (\* to *\)
+ *            expr Location.loc (\* body *\)
+ *   | Break of unit Location.loc
+ *   | Let of dec list *
+ *            expr Location.loc list Location.loc
+ *   | Array of S.t Location.loc * (\* type *\)
+ *              expr Location.loc * (\* size *\)
+ *              expr Location.loc (\* init *\)
+ * and strip_loc_var = function
+ *   | SimpleVar {item = t; _} -> SimpleVar {item = t; loc = Location.dummy}
+ *   | FieldVar ({item = var; _}, {item = t; _}) -> FieldVar ({item = var; loc = Location.dummy}, {item = t; loc = Location.dummy})
+ *   | SubscriptVar ({item = var; _}, {item = expr; _}) -> SubscriptVar ({item = var; loc = Location.dummy}, {item = expr; loc = Location.dummy}) *)
