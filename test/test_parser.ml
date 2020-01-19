@@ -138,7 +138,7 @@ let test_cases = [
     "parse_test_minus" >:: test_minus_num;
     "parse_nil" >:: test_nil;
     "parse_eq" >:: test_eq;
-    "parse_neq" >:: test_neq_1;
+    "parse_neq" >:: test_neq;
     "parse_simple_var" >:: test_simple_var;
     "parse_var_dec" >:: test_var_dec;
     "parse_var_array_dec" >:: test_var_array_dec;
