@@ -1,7 +1,12 @@
-opam-version: "1.2"
+opam-version: "2.0"
 name: "tiger"
 maintainer: "Tim McGilchrist <timmcgil@gmail.com>"
 authors: [ "Tim McGilchrist <timmcgil@gmail.com>" ]
+synopsis: "Tiger compiler"
+description: """
+Compiler for Tiger language from
+'Modern Compiler Implementation in ML'
+"""
 license: "BSD-3-clause"
 homepage: "https://github.com/tmcgilchrist/tiger"
 dev-repo: "https://github.com/tmcgilchrist/tiger.git"
@@ -10,7 +15,7 @@ build: [
   ["dune" "build" "-p" name "-j" jobs]
 ]
 depends: [
-  "core_kernel" {>= "v0.11.0" }
+  "core_kernel" {= "v0.11.0" }
   "menhir" {>= "0.2.0"}
   "ounit" {test & >= "1.0.2"}
   "qcheck" {test & >= "0.8"}

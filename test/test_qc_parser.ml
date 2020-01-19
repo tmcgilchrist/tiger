@@ -1,20 +1,18 @@
-open Syntax
+open OUnit
+open Core_kernel
+open Quickcheck
 
-let quick =
-  let open Generators in
-  QCheck.Test.make ~count:1000
-    ~name:"QC - parse arith"
-    QCheck.(arbitrary_arith) (fun l ->
-      let a = Parser.prog Lexer.lexer @@ Lexing.from_string @@ Syntax.Pretty.print_to_string @@ l in
-      (* a == l *)
+let quick _ =
+  test Generators.gen_arith
+      ~f:(fun l ->
+        let
+          result = (Parser.prog Lexer.lexer @@ Lexing.from_string @@ Syntax.Pretty.print_to_string @@ l)
+        in
+        assert_equal ~msg:"lex and parse roundtrip failed"
+          ~printer:(fun a -> Sexp.to_string_hum @@ Syntax.sexp_of_expr a.Location.item)
+          (Location.mkdummy @@ Syntax.strip_loc result.item)
+          (Location.mkdummy @@ Syntax.strip_loc @@ l.item))
 
-      (* TODO Suspect line numbers are off and the comparison is wrong *)
-      match a.L.item = l.L.item with
-      | true -> true
-      | false -> let _ =
-        Core_kernel.(Out_channel.printf "expected: %s %s\n" (Syntax.Pretty.print_to_string l) (Location.to_string l.L.loc);
-                     Out_channel.printf "got: %s %s\n" (Syntax.Pretty.print_to_string a) (Location.to_string a.L.loc);)
-                in false
-    )
-let _ =
-  QCheck_runner.run_tests_main [quick]
+let test_cases = [
+    "lex and parse" >:: quick
+  ]

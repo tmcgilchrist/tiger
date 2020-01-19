@@ -46,9 +46,9 @@ let rec trans_exp venv tenv exp =
         let open Result.Monad_infix in
         trans_exp venv tenv left >>= fun tyleft ->
         trans_exp venv tenv right >>= fun tyright ->
-        check_int tyleft >>= fun _ ->
-        check_int tyright >>= fun _ ->
-        Ok {exp = Translate.(); ty = T.Int}
+        check_int tyleft >>= fun _x ->
+        check_int tyright >>= fun _y ->
+        Ok {exp = `Translate_Exp; ty = T.Int}
      | _ -> Error NotImplemented)
   | S.Var v ->
      trvar venv v
@@ -58,7 +58,7 @@ let rec trans_exp venv tenv exp =
        (match Symbol.Table.find venv var.L.item with
        | Some (Env.VarEntry v) ->
           (match actual_ty v with
-          | Some t -> Ok {exp = Translate.(); ty = t}
+          | Some t -> Ok {exp = `Translate_Exp; ty = t}
           | None -> Error NotImplemented)
        | Some (Env.FunEntry _) ->
           Error (ExpectedVariable (var.Location.item, var.Location.loc))

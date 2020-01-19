@@ -1,23 +1,4 @@
-(executables
- (libraries tiger oUnit core_kernel)
- (modules test_parser)
- (names test_parser))
-
-; (executables
-;  ((libraries (tiger oUnit core_kernel qcheck))
-;   (modules (test_parser test_qc_parser generators))
-;   (names (test_parser test_qc_parser))))
-
-(alias
- (name runtest)
- (package tiger)
- (deps
-  (:< test_parser.exe))
- (action
-  (run %{<})))
-
-; (alias
-;  ((name runtest)
-;   (package tiger)
-;   (deps (test_qc_parser.exe))
-;   (action (run ${<}))))
+(test
+ (name runner)
+ (libraries tiger oUnit core_kernel qcheck)
+ (modules test_parser test_qc_parser generators runner))
