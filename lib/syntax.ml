@@ -202,36 +202,28 @@ module Pretty = struct
   let print_to_string prog : string = to_string 80 4 @@ pp prog
 end
 
-let strip_loc (a : expr Location.loc) : expr = a
-(* let rec strip_loc = function
- *   | Var {item = v; _} -> Var (Location.mkdummy @@ strip_loc_var v)
- *   | Nil {item = u; _} -> Nil (Location.mkdummy u)
- *   | Int {item = i; _} -> Int (Location.mkdummy i)
- *   | String {item = str; _} -> String (Location.mkdummy str)
- *   (\* | Call [((t, _loc), (expr, _loc))] ->  *\)
- *   | UnaryOp ({item = op; _}, {item = expr; _}) ->  UnaryOp (Location.mkdummy op, Location.mkdummy @@ strip_loc expr)
- *   | Op ({item = op; _}, {item = lhs; _}, {item = rhs; _}) -> Op (Location.mkdummy op, Location.mkdummy @@ strip_loc lhs, Location.mkdummy @@ strip_loc rhs)
- *   | Record of S.t Location.loc * (\* type name *\)
- *               (S.t Location.loc * expr Location.loc) list (\* elements *\)
- *   | Seq of expr Location.loc list
- *   | Assign of var Location.loc * expr Location.loc
- *   | If of expr Location.loc * (\* condition *\)
- *           expr Location.loc * (\* then *\)
- *           expr Location.loc option  (\* else *\)
- *   | While of expr Location.loc * (\* condition *\)
- *              expr Location.loc    (\* body *\)
- *   | For of S.t * (\* indice symbol *\)
- *            bool ref * (\* escapes *\)
- *            expr Location.loc * (\* from *\)
- *            expr Location.loc * (\* to *\)
- *            expr Location.loc (\* body *\)
- *   | Break of unit Location.loc
- *   | Let of dec list *
- *            expr Location.loc list Location.loc
- *   | Array of S.t Location.loc * (\* type *\)
- *              expr Location.loc * (\* size *\)
- *              expr Location.loc (\* init *\)
- * and strip_loc_var = function
- *   | SimpleVar {item = t; _} -> SimpleVar {item = t; loc = Location.dummy}
- *   | FieldVar ({item = var; _}, {item = t; _}) -> FieldVar ({item = var; loc = Location.dummy}, {item = t; loc = Location.dummy})
- *   | SubscriptVar ({item = var; _}, {item = expr; _}) -> SubscriptVar ({item = var; loc = Location.dummy}, {item = expr; loc = Location.dummy}) *)
+(* let strip_loc (a : expr Location.loc) : expr = a *)
+let rec strip_loc = function
+  | Var {item = v; _} -> Var (Location.mkdummy @@ strip_loc_var v)
+  | Nil {item = u; _} -> Nil (Location.mkdummy u)
+  | Int {item = i; _} -> Int (Location.mkdummy @@ i)
+  | String {item = str; _} -> String (Location.mkdummy str)
+  | Call (s, e) -> Call (s, List.map e ~f:(fun {item = x; _} -> Location.mkdummy @@ strip_loc x))
+  | UnaryOp ({item = op; _}, {item = expr; _}) ->  UnaryOp (Location.mkdummy op, Location.mkdummy @@ strip_loc expr)
+  | Op ({item = op; _}, {item = lhs; _}, {item = rhs; _}) -> Op (Location.mkdummy op, Location.mkdummy @@ strip_loc lhs, Location.mkdummy @@ strip_loc rhs)
+  | Record ({item = s; _}, b) -> Record (Location.mkdummy s, List.map b ~f:(fun ({item = x; _}, {item = y; _}) -> (Location.mkdummy x, Location.mkdummy y)))
+  | Seq x -> Seq (List.map x ~f:(fun {item = y; _} -> Location.mkdummy @@ strip_loc y))
+  | Assign ({item = x; _}, {item = y; _}) -> Assign (Location.mkdummy @@ strip_loc_var x, Location.mkdummy @@ strip_loc y)
+  | If ({item=x;_}, {item=y;_}, z) -> If (Location.mkdummy @@ strip_loc x
+                                        , Location.mkdummy @@ strip_loc y
+                                        , Option.map z ~f:(fun {item = x; _} -> Location.mkdummy @@ strip_loc x))
+  | While ({item=x;_}, {item=y;_}) -> While (Location.mkdummy @@ strip_loc x, Location.mkdummy @@ strip_loc y)
+  | For (sym, r, {item=x;_}, {item=y;_}, {item=z;_}) -> For (sym, r, Location.mkdummy @@ strip_loc x, Location.mkdummy @@ strip_loc y, Location.mkdummy @@ strip_loc z)
+  | Break ({item=x;_}) -> Break (Location.mkdummy x)
+  | Let (x, {item=e;_}) -> Let (x
+                     , Location.mkdummy @@ List.map e ~f:(fun {item = x; _} -> Location.mkdummy @@ strip_loc x) )
+  | Array ({item=x;_}, {item=y;_}, {item=z;_}) -> Array (Location.mkdummy x, Location.mkdummy @@ strip_loc y, Location.mkdummy @@ strip_loc z)
+  and strip_loc_var = function
+    | SimpleVar {item = t; _} -> SimpleVar {item = t; loc = Location.dummy}
+    | FieldVar ({item = var; _}, {item = t; _}) -> FieldVar ({item = var; loc = Location.dummy}, {item = t; loc = Location.dummy})
+    | SubscriptVar ({item = var; _}, {item = expr; _}) -> SubscriptVar ({item = var; loc = Location.dummy}, {item = expr; loc = Location.dummy})

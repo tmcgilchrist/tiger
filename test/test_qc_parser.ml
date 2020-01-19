@@ -10,8 +10,8 @@ let quick _ =
         in
         assert_equal ~msg:"lex and parse roundtrip failed"
           ~printer:(fun a -> Sexp.to_string_hum @@ Syntax.sexp_of_expr a.Location.item)
-          (Syntax.strip_loc result)
-          l)
+          (Location.mkdummy @@ Syntax.strip_loc result.item)
+          (Location.mkdummy @@ Syntax.strip_loc @@ l.item))
 
 let test_cases = [
     "lex and parse" >:: quick
