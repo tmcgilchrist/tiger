@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  ocaml: oni-tech/ocaml-build@dev:tim-6 # use latest version
+  ocaml: oni-tech/ocaml-build@dev:tim-7 # use latest version
   github: haskell-works/github-release@1.3.3
 
 workflows:
