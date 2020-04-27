@@ -9,4 +9,4 @@ workflows:
     jobs:
       - ocaml/build-with-cci-cache:
           name: OCaml 4.04
-          executor: ocaml/ocaml-4_04
+          executor: ocaml/build-opam2
