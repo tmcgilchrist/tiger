@@ -3,7 +3,7 @@ jobs:
 
   build-4.08:
     docker:
-      - image: ocaml/opam:4.08
+      - image: ocaml/opam:ubuntu-lts-ocaml-4.08
     steps:
       - checkout
       - run:
