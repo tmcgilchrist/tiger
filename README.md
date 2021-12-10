@@ -1,5 +1,4 @@
-tiger - Compiler for Tiger language from "Modern Compiler Implementation
-in ML"
+tiger - Compiler for Tiger language from "Modern Compiler Implementation in ML"
 ===============================================================================
 
 The Tiger language is a small language with nested functions, record values with implicit pointers, arrays, interger, string variables and a few simple structured control constructs.
@@ -12,18 +11,17 @@ the `oUnit` package and reconfigure the build process to enable tests:
 
 ``` shell
 # Setup isolated sandbox/switch
-opam switch 4.06.1-tiger --alias 4.06.1
+opam switch create 4.13.0-tiger 4.13.0
+opam switch link 4.13.0-tiger
 
 # Install dependencies
-opam install "dune=1.3.0"
-opam pin add -n tiger .
-opam install --deps-only tiger -t
+opam install --deps-only . -ty
 
 # Building
-jbuilder build
+dune build @all
 
 # Testing
-jbuilder runtest
+dune build @runtest --force
 ```
 
 Tests are under `test` directory.
@@ -32,7 +30,6 @@ Tiger Examples
 ---------------------
 
 There are some examples of Tiger programs under `examples`.
-
 
 Copyright and license
 ---------------------
