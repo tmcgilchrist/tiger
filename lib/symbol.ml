@@ -22,7 +22,7 @@ module SymbolOrd = struct
 
   let sexp_of_t = sexp_of_symbol
   let t_of_sexp = symbol_of_sexp
-  let compare = Pervasives.compare
+  let compare = Stdlib.compare
 end
 
 module Table = Map.Make (SymbolOrd)
