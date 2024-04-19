@@ -1,5 +1,3 @@
-open Core_kernel
-
 type venv = Env.entry Symbol.Table.t
 type tenv = Types.t Symbol.Table.t
 

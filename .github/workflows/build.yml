@@ -16,7 +16,7 @@ jobs:
           - ubuntu-latest
 
         ocaml-compiler:
-          - 4.13.x
+          - 5.1.x
 
     runs-on: ${{ matrix.os }}
 
@@ -43,4 +43,4 @@ jobs:
 
       - name: Opam Lint
         run: |
-          opam lint tiger.opam 
+          opam lint tiger.opam

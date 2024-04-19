@@ -11,5 +11,5 @@ let base_venv =
 
 let base_tenv =
   Symbol.Table.empty
-  |> Symbol.Table.add_exn ~key:(Symbol.symbol "int") ~data:T.Int
-  |> Symbol.Table.add_exn ~key:(Symbol.symbol "string") ~data:T.String
+  |> Symbol.Table.add (Symbol.symbol "int") T.Int
+  |> Symbol.Table.add (Symbol.symbol "string") T.String

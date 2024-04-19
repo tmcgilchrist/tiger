@@ -1,4 +1,3 @@
-open Core_kernel
 open Sexplib.Std
 
 type symbol = int * string [@@deriving sexp]

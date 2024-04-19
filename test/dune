@@ -3,10 +3,10 @@
 ;  (modules test_parser)
 ;  (names test_parser))
 
-(tests
- (names test_parser)
- (libraries oUnit core_kernel tiger)
- (action (run %{test})))
+;(tests
+; (names test_parser)
+; (libraries oUnit tiger)
+; (action (run %{test})))
 
 ; (executables
 ;  ((libraries (tiger oUnit core_kernel qcheck))

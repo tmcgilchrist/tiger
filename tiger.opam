@@ -8,12 +8,11 @@ license: "BSD-3-clause"
 homepage: "https://github.com/tmcgilchrist/tiger"
 bug-reports: "https://github.com/tmcgilchrist/tiger/issues"
 depends: [
-  "dune" {>= "2.8"}
+  "dune" {>= "3.0"}
   "menhir"
-  "core_kernel" {>= "v0.11.0"}
   "smart-print"
   "ounit" {with-test}
-  "ocaml" {>= "4.13.0"}
+  "ocaml" {>= "5.1.0"}
   "odoc" {with-doc}
 ]
 build: [

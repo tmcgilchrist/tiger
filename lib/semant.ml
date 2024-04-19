@@ -1,5 +1,3 @@
-open Core_kernel
-
 type venv = Env.entry Symbol.Table.t
 type tenv = Types.t Symbol.Table.t
 
@@ -37,13 +35,14 @@ let actual_ty (ty : Types.t) : Types.t option =
   | T.Name (_,_) -> None (* Follow names through venv (?) to get the actual types *)
 
 
-let rec trans_exp venv tenv exp =
+let rec trans_exp (venv : venv) (tenv : tenv) exp =
+  let open Result in
+  let (>>=) = bind in
   match exp.L.item with
   | S.Op (op, left, right) ->
      (match op.L.item with
      | S.Plus | S.Minus | S.Times | S.Div ->
         (* Arithmetic operations require integer arguments *)
-        let open Result.Monad_infix in
         trans_exp venv tenv left >>= fun tyleft ->
         trans_exp venv tenv right >>= fun tyright ->
         check_int tyleft >>= fun _ ->
@@ -53,9 +52,9 @@ let rec trans_exp venv tenv exp =
   | S.Var v ->
      trvar venv v
   | _ -> Error NotImplemented
-  and trvar (venv : venv) var = match var.L.item with
-    | S.SimpleVar var  ->
-       (match Symbol.Table.find venv var.L.item with
+  and trvar venv var = match var.L.item with
+    | S.SimpleVar var ->
+       (match Symbol.Table.find_opt var.L.item venv with
        | Some (Env.VarEntry v) ->
           (match actual_ty v with
           | Some t -> Ok {exp = Translate.(); ty = t}
@@ -65,8 +64,6 @@ let rec trans_exp venv tenv exp =
        | None ->
           Error UndefinedVariable)
     | _ -> Error NotImplemented
-
-
 
 let trans_dec v t _s = Ok (v, t)
 
