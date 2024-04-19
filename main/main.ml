@@ -1,13 +1,14 @@
-open Core_kernel
 
 (* the name of the file which contains the expressions *)
 let filename = Sys.argv.(1)
 
 let main () =
-  let input = In_channel.create filename in
+  let input = In_channel.open_text filename in
   let filebuf = Lexing.from_channel input in
   try
-    Printf.printf "%s\n" (Syntax.Pretty.print_to_string (Parser.prog Lexer.lexer filebuf))
+    (* TODO Convert Pretty module to PPrint library and then fix this printing. *)
+    let _ = Parser.prog Lexer.lexer filebuf in
+    Printf.printf "%s%!" "yes"
   with
   | Lexer.Error msg ->
       Printf.eprintf "%s%!" msg

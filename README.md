@@ -1,7 +1,9 @@
 tiger - Compiler for Tiger language from "Modern Compiler Implementation in ML"
 ===============================================================================
 
-The Tiger language is a small language with nested functions, record values with implicit pointers, arrays, interger, string variables and a few simple structured control constructs.
+The Tiger language is a small language with nested functions, record values with implicit pointers, arrays, integer, string variables and a few simple structured control constructs.
+
+
 
 Development
 ---------------------

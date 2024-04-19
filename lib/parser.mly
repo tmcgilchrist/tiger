@@ -20,7 +20,8 @@
 %nonassoc EQ NEQ GT GTEQ LT LTEQ
 %left PLUS MINUS
 %left TIMES DIV
-%nonassoc UNARYMINUS
+%left UNARYMINUS
+
 %start <Syntax.expr Location.loc> prog
 
 %%
@@ -34,21 +35,18 @@ symbol :
 
 prog:
   | e = loc(expr) EOF { e }
-
   | error {Error.syntax_error (Location.mk $startpos $endpos) ""}
 
 expr:
   | var = loc(lvalue) { Syntax.Var var }
   | unit = loc(NIL) { Syntax.Nil unit }
-  | LPAREN seq = separated_list(SEMICOLON, loc(expr)) RPAREN
-    { Syntax.Seq seq }
-  | i = loc(INT)
-    { Syntax.Int i }
+  | LPAREN seq = separated_list(SEMICOLON, loc(expr)) RPAREN { Syntax.Seq seq }
+  | i = loc(INT) { Syntax.Int i }
   | _minus = MINUS e = loc (expr) {
-                             Syntax.UnaryOp (
-                                 Location.mkloc Syntax.Minus (Location.mk $startpos(_minus) $endpos(_minus)),
-                                 e
-                               )
+      Syntax.UnaryOp (
+          Location.mkloc Syntax.Minus (Location.mk $startpos(_minus) $endpos(_minus)),
+          e
+        )
   } %prec UNARYMINUS
   | e1 = loc(expr) o = loc(op) e2 = loc(expr)
     { Syntax.Op (o, e1, e2) }
@@ -68,22 +66,22 @@ expr:
   }
   | s = loc(STRING) { Syntax.String s }
   | fn = symbol LPAREN formals = separated_list(COMMA, loc(expr)) RPAREN {
-                                                 Syntax.Call (
-                                                     fn,
-                                                     formals
-                                                   )
-                                               }
+      Syntax.Call (
+          fn,
+          formals
+        )
+                                   }
   | typ = symbol LBRACE fields = separated_list(COMMA, field_assign) RBRACE {
-                                                 Syntax.Record (
-                                                     typ,
-                                                     fields
+      Syntax.Record (
+          typ,
+          fields
     )
    }
   | typ = symbol LBRACK size = loc(expr) RBRACK OF init = loc(expr) {
-                                                               Syntax.Array (
-      typ,
-      size,
-      init
+      Syntax.Array (
+          typ,
+          size,
+          init
     )
   } %prec LBRACK
   | var = loc(lvalue) COLONEQ exp = loc(expr) {

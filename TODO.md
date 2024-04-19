@@ -1,6 +1,7 @@
 TODO
 ======================================
 
+ * Remove use of core/base
  * Add support for lexing full range of tokens
  * Add parsing of full range of expressions
  * Investigate a nice pretty printing library (smart-print, unless I write my own based off Wadler's paper)
