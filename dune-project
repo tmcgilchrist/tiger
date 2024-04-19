@@ -13,6 +13,7 @@
  (synopsis "Compiler for Tiger language from Modern Compiler Implementation in ML")
  (depends
    menhir
-   smart-print
+   pprint
+   sexplib ppx_sexp_conv
   (ounit :with-test)
   (ocaml (>= 5.1.0))))

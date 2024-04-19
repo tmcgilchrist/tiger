@@ -10,7 +10,9 @@ bug-reports: "https://github.com/tmcgilchrist/tiger/issues"
 depends: [
   "dune" {>= "3.0"}
   "menhir"
-  "smart-print"
+  "pprint"
+  "sexplib"
+  "ppx_sexp_conv"
   "ounit" {with-test}
   "ocaml" {>= "5.1.0"}
   "odoc" {with-doc}

@@ -47,7 +47,7 @@ let rec trans_exp (venv : venv) (tenv : tenv) exp =
         trans_exp venv tenv right >>= fun tyright ->
         check_int tyleft >>= fun _ ->
         check_int tyright >>= fun _ ->
-        Ok {exp = Translate.(); ty = T.Int}
+        Ok {exp = (); ty = T.Int}
      | _ -> Error NotImplemented)
   | S.Var v ->
      trvar venv v
@@ -57,7 +57,7 @@ let rec trans_exp (venv : venv) (tenv : tenv) exp =
        (match Symbol.Table.find_opt var.L.item venv with
        | Some (Env.VarEntry v) ->
           (match actual_ty v with
-          | Some t -> Ok {exp = Translate.(); ty = t}
+          | Some t -> Ok {exp = (); ty = t}
           | None -> Error NotImplemented)
        | Some (Env.FunEntry _) ->
           Error (ExpectedVariable (var.Location.item, var.Location.loc))
